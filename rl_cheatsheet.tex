@@ -108,37 +108,59 @@ The Agent at each step $t$ receives a representation of the environment's \emph{
 \section{Policy}
 A \emph{policy} is a mapping from a state to an action
 \begin{equation}
-\pi_t(s|a)
+\pi(s|a)
 \label{eq: policy}
 \end{equation}
-That is the probability of select an action $A_t = a$ if $S_t = s$.
+That is the probability of select an action $A_t = a$ if $S_t = s$.\\
+also policy could be a deterministic function
+\begin{equation}
+    \pi(s) = a
+    \label{eq: deterministic_policy}
+\end{equation}
+
 
 \newlength{\MyLen}
 \settowidth{\MyLen}{\texttt{letterpaper}/\texttt{a4paper} \ }
 
 
-\section{Reward}
-The total \emph{reward} is expressed as:
+\section{Return}
+The \emph{Return} is defined as:
 \begin{equation}
-G_t = \sum_{k = 0}^H \gamma^kr_{t + k + 1}
+G_t \doteq \sum_{k = 0}^H \gamma^kr_{t + k + 1}
 \label{eq: total_reward}
 \end{equation}
-Where $\gamma$ is the \emph{discount factor} and $H$ is the \emph{horizon}, that can be infinite.
+Where $\gamma$ is the \emph{discount factor} and $H$ is the \emph{horizon}, that can be infinite 
+(of course, mathematically, it should be infinite. because otherwise policy will also depend on time).
 
-\subsection{Markov Decision Process}
+
+\section{Markov Decision Process}
 A \textbf{Markov Decision Process}, MDP, is a 5-tuple $(S, A, P, R, \gamma)$ where:
 \begin{equation}
         \begin{array}{l}
          \text{finite set of states:} \\
                 s \in S \\
          \text{finite set of actions:} \\
-        a \in A \\
+        a \in A \text{ or } A(s)\\
                  \text{state transition probabilities:} \\
-        p(s' | s, a) = Pr \{S_{t + 1} = s' | S_t = s, A_t = a \} \\
-                \text{expected reward for state-action-nexstate:}\\
-        r(s',s, a) = \mathbb{E}[ R_{t + 1} | S_{t + 1} = s',  S_t = s, A_t = a ]  \\
+        P(s' | s, a) = Pr \{S_{t + 1} = s' | S_t = s, A_t = a \} \\
+                \text{reward function:}\\
+        R(s) = \mathbb{E}[ R_{t + 1} | S_t = s ]  \\
+        \text{where two latter equations can be written as one:}\\
+        P(s',r | s, a) = Pr\{S_{t + 1} = s', R_{t + 1} = r | S_t = s, A_t = a\}\\
+        \text{discount factor:}\\
+        \gamma \in [0,1)
         \end{array}
 \end{equation}
+
+\subsection{Markov Property}
+to be able to use MDP as a model of a problem, the condition
+\begin{equation}
+    \begin{array}{l}
+        Pr\{S_{t + 1}, R_{t + 1}|s_t,a_t,r_t,s_{t-1},a_{t-1},\dots,r_0,s_0,a_0\} =\\ Pr\{S_{t + 1}, R_{t + 1}|s_t,a_t\}
+    \end{array}
+    \label{eq: markov_property}
+\end{equation}
+should be true.
 
 \section{Value Function}
 Value function describes \emph{how good} is to be in a specific state $s$ under a certain policy $\pi$. For MDP:
@@ -154,6 +176,12 @@ Informally, is the expected return (expected cumulative discounted reward) when 
 \begin{equation}
 V_*(s) = \max\limits_{\pi} V_\pi(s)
 \label{eq: value_optimal}
+\end{equation}
+
+\subsection{Optimal Policy}
+Optimal policy is the policy that maximize value function (i.e. return) for each state, denoted by $ \pi^*$:
+\begin{equation}
+    \forall s,\pi \qquad V_{\pi^*}(s) \ge V_{\pi}(s)
 \end{equation}
 
 \section{Action-Value (Q) Function}
@@ -438,11 +466,11 @@ Where $\theta$ are the weights of the network and $U(D)$ is the experience repla
 %---------------------------------------------------------------------------
 
 \rule{0.3\linewidth}{0.25pt} \\
-Copyright \copyright\ 2018 Francesco Saverio Zuppichini
+Forked from Francesco Saverio Zuppichini and improved by Alireza Nobakht
 
 \scriptsize
 
-\href{https://github.com/FrancescoSaverioZuppichini/Reinforcement-Learning-Cheat-Sheet}{https://github.com/FrancescoSaverioZuppichini/Reinforcement-Learning-Cheat-Sheet}
+\href{https://github.com/alirezanobakht13/Reinforcement-Learning-Cheat-Sheet}{https://github.com/alirezanobakht13/Reinforcement-Learning-Cheat-Sheet}
 
 \end{multicols}
 
